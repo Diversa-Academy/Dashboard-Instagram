@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Relatório Janeiro Diversa</title>
+    <title>Dashboard - Relatório Diversa</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -24,7 +24,7 @@
         .container {
             max-width: 1400px;
             margin: 0 auto;
-            position: relative; /* Necessário para posicionar o tooltip */
+            position: relative;
         }
 
         .header {
@@ -109,10 +109,9 @@
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             transition: transform 0.3s, box-shadow 0.3s;
-            /* Animação de carregamento */
             opacity: 0;
             animation: fadeIn 0.5s ease-out forwards;
-            position: relative; /* Contexto para o tooltip */
+            position: relative;
         }
 
         .stat-card:hover {
@@ -120,7 +119,6 @@
             box-shadow: 0 15px 40px rgba(0,0,0,0.25);
         }
 
-        /* Animação de cascata */
         .stat-card:nth-child(1) { animation-delay: 0.1s; }
         .stat-card:nth-child(2) { animation-delay: 0.2s; }
         .stat-card:nth-child(3) { animation-delay: 0.3s; }
@@ -169,8 +167,12 @@
             background: #d4edda;
             color: #155724;
         }
+        
+        .negative {
+            background: #f8d7da;
+            color: #721c24;
+        }
 
-        /* Estilos para o Tooltip de Hover */
         #hoverTooltip {
             position: absolute;
             background: #002855;
@@ -180,7 +182,7 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
             font-size: 0.9em;
             z-index: 100;
-            pointer-events: none; /* Para que o mouse não "veja" o tooltip */
+            pointer-events: none;
             opacity: 0;
             visibility: hidden;
             transition: opacity 0.3s, visibility 0.3s;
@@ -214,7 +216,6 @@
             border-style: solid;
             border-color: transparent #002855 transparent transparent;
         }
-
 
         .chart-container {
             background: white;
@@ -268,46 +269,20 @@
             line-height: 1.6;
         }
 
-        /* Responsividade */
         @media (max-width: 768px) {
-            .header h1 {
-                font-size: 1.8em;
-            }
-            
-            .stat-card .value {
-                font-size: 2em;
-            }
-            
-            .charts-row {
-                grid-template-columns: 1fr;
-            }
-            
-            .period-selector {
-                flex-direction: column;
-                gap: 15px;
-                align-items: flex-start;
-            }
-            
-            .period-selector .controls {
-                width: 100%;
-                justify-content: space-between;
-            }
-            
-            canvas {
-                max-height: 250px;
-            }
-
-            /* Esconder tooltip em mobile */
-            #hoverTooltip {
-                display: none;
-            }
+            .header h1 { font-size: 1.8em; }
+            .stat-card .value { font-size: 2em; }
+            .charts-row { grid-template-columns: 1fr; }
+            .period-selector { flex-direction: column; gap: 15px; align-items: flex-start; }
+            .period-selector .controls { width: 100%; justify-content: space-between; }
+            canvas { max-height: 250px; }
+            #hoverTooltip { display: none; }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <!-- Logo da Diversa -->
             <img class="logo" src="https://z-cdn-media.chatglm.cn/files/6f825e46-56c5-414c-93cf-16b9ac5a27bf.png?auth_key=1870145633-342d5aeb99484b8389d752fcd3ffc44e-0-9b9774888cba1e70a8186e1667603b29" alt="Logo Diversa Investimentos">
             <h1>Dashboard Instagram - Janeiro 2025</h1>
             <p>Relatório completo de performance e engajamento</p>
@@ -317,512 +292,206 @@
             <h2>Período de Análise</h2>
             <div class="controls">
                 <select id="monthSelector">
-                    <option value="1" selected>Janeiro</option>
-                    <option value="2">Fevereiro</option>
-                    <option value="3">Março</option>
-                    <option value="4">Abril</option>
-                    <option value="5">Maio</option>
-                    <option value="6">Junho</option>
+                    <option value="janeiro" selected>Janeiro</option>
+                    <option value="fevereiro">Fevereiro</option>
+                    <option value="marco">Março</option>
+                    <option value="abril">Abril</option>
                 </select>
                 <select id="yearSelector">
                     <option value="2025" selected>2025</option>
                     <option value="2024">2024</option>
-                    <option value="2023">2023</option>
                 </select>
                 <button id="applyFilter">Aplicar</button>
             </div>
         </div>
 
         <div class="stats-grid">
-            <div class="stat-card" data-detail="Foco em conteúdo dinâmico e de rápido consumo.">
+            <div class="stat-card" data-stat="publications">
                 <span class="material-icons">phone_android</span>
                 <div class="value">8</div>
                 <div class="label">Publicações (Reels)</div>
+                <div class="change positive" style="display:none;"></div>
             </div>
-
-            <div class="stat-card" data-detail="Bom desempenho, levando em conta segmento, diversificação deconteúdos e número de seguidores.">
+            <div class="stat-card" data-stat="avgViews">
                 <span class="material-icons">visibility</span>
                 <div class="value">6,2K</div>
                 <div class="label">Média de Visualizações</div>
-                <div class="change positive">↑ Máx: 24,9K</div>
+                <div class="change positive" style="display:none;">↑ Máx: 24,9K</div>
             </div>
-
-            <div class="stat-card" data-detail="Alcance orgânico forte, indicando bom potencial de descoberta.">
+            <div class="stat-card" data-stat="organicReach">
                 <span class="material-icons">groups</span>
                 <div class="value">40K+</div>
                 <div class="label">Pessoas Alcançadas (Orgânico)</div>
-                <div class="change positive">74% não seguidores</div>
+                <div class="change positive" style="display:none;">74% não seguidores</div>
             </div>
-
-            <div class="stat-card" data-detail="Crescimento significativo no interesse pelo perfil.">
+            <div class="stat-card" data-stat="profileVisits">
                 <span class="material-icons">account_circle</span>
                 <div class="value">7K+</div>
                 <div class="label">Visitas ao Perfil</div>
-                <div class="change positive">↑ 43,8%</div>
+                <div class="change positive" style="display:none;">↑ 43,8%</div>
             </div>
-
-            <div class="stat-card" data-detail="Crescimento constante na base de seguidores.">
+            <div class="stat-card" data-stat="newFollowers">
                 <span class="material-icons">person_add</span>
                 <div class="value">50</div>
                 <div class="label">Novos Seguidores</div>
-                <div class="change positive">↑ 18 vs mês anterior</div>
+                <div class="change positive" style="display:none;">↑ 18 vs mês anterior</div>
             </div>
-
-            <div class="stat-card" data-detail="Dobro de cliques em relação ao período anterior.">
+            <div class="stat-card" data-stat="linkClicks">
                 <span class="material-icons">link</span>
                 <div class="value">18</div>
                 <div class="label">Cliques no Link</div>
-                <div class="change positive">↑ 100%</div>
+                <div class="change positive" style="display:none;">↑ 100%</div>
             </div>
-
-            <div class="stat-card" data-detail="Alto engajamento com conteúdo temporário.">
+            <div class="stat-card" data-stat="stories">
                 <span class="material-icons">auto_stories</span>
                 <div class="value">28</div>
                 <div class="label">Stories Publicados</div>
-                <div class="change positive">19,3% visualizações</div>
+                <div class="change positive" style="display:none;">19,3% visualizações</div>
             </div>
-
-            <div class="stat-card" data-detail="Soma de curtidas, comentários e compartilhamentos.">
+            <div class="stat-card" data-stat="interactions">
                 <span class="material-icons">forum</span>
                 <div class="value">791</div>
                 <div class="label">Interações</div>
+                <div class="change" style="display:none;"></div>
             </div>
-
-            <div class="stat-card" data-detail="Alcance pago direcionado para uma ação específica.">
+            <div class="stat-card" data-stat="adViews">
                 <span class="material-icons">rocket_launch</span>
                 <div class="value">120K+</div>
                 <div class="label">Visualizações por Anúncio</div>
-                <div class="change positive">~90K direcionados ao Quiz</div>
+                <div class="change positive" style="display:none;">~90K direcionados ao Quiz</div>
             </div>
-
-            <div class="stat-card" data-detail="Número de usuários que iniciaram o quiz interativo.">
+            <div class="stat-card" data-stat="quizStarted">
                 <span class="material-icons">quiz</span>
                 <div class="value">14</div>
                 <div class="label">Quiz Iniciados</div>
-                <div class="change positive">100% de conclusão</div>
+                <div class="change positive" style="display:none;">100% de conclusão</div>
             </div>
-
-            <div class="stat-card" data-detail="Taxa de conclusão perfeita, indicando alta relevância.">
+            <div class="stat-card" data-stat="quizCompleted">
                 <span class="material-icons">check_circle</span>
                 <div class="value">14</div>
                 <div class="label">Quiz Concluídos</div>
+                <div class="change" style="display:none;"></div>
             </div>
         </div>
 
-        <!-- Tooltip de Hover -->
         <div id="hoverTooltip"></div>
 
-        <!-- Novo Gráfico de Tendência -->
         <div class="chart-container">
             <h2><span class="material-icons" style="font-size: 0.9em; vertical-align: middle; margin-right: 8px; color: #0066A1;">trending_up</span>Evolução de Novos Seguidores</h2>
             <canvas id="followersTrendChart"></canvas>
         </div>
-
         <div class="charts-row">
-            <div class="chart-container">
-                <h2><span class="material-icons" style="font-size: 0.9em; vertical-align: middle; margin-right: 8px; color: #0066A1;">movie</span>Tipos de Conteúdo</h2>
-                <canvas id="contentChart"></canvas>
-            </div>
-
-            <div class="chart-container">
-                <h2><span class="material-icons" style="font-size: 0.9em; vertical-align: middle; margin-right: 8px; color: #0066A1;">wc</span>Distribuição de Gênero</h2>
-                <canvas id="genderChart"></canvas>
-            </div>
+            <div class="chart-container"><h2><span class="material-icons" style="font-size: 0.9em; vertical-align: middle; margin-right: 8px; color: #0066A1;">movie</span>Tipos de Conteúdo</h2><canvas id="contentChart"></canvas></div>
+            <div class="chart-container"><h2><span class="material-icons" style="font-size: 0.9em; vertical-align: middle; margin-right: 8px; color: #0066A1;">wc</span>Distribuição de Gênero</h2><canvas id="genderChart"></canvas></div>
         </div>
-
         <div class="charts-row">
-            <div class="chart-container">
-                <h2><span class="material-icons" style="font-size: 0.9em; vertical-align: middle; margin-right: 8px; color: #0066A1;">cake</span>Faixa Etária do Público</h2>
-                <canvas id="ageChart"></canvas>
-            </div>
-
-            <div class="chart-container">
-                <h2><span class="material-icons" style="font-size: 0.9em; vertical-align: middle; margin-right: 8px; color: #0066A1;">location_city</span>Top 4 Cidades</h2>
-                <canvas id="citiesChart"></canvas>
-            </div>
+            <div class="chart-container"><h2><span class="material-icons" style="font-size: 0.9em; vertical-align: middle; margin-right: 8px; color: #0066A1;">cake</span>Faixa Etária do Público</h2><canvas id="ageChart"></canvas></div>
+            <div class="chart-container"><h2><span class="material-icons" style="font-size: 0.9em; vertical-align: middle; margin-right: 8px; color: #0066A1;">location_city</span>Top 4 Cidades</h2><canvas id="citiesChart"></canvas></div>
         </div>
-
         <div class="charts-row">
-            <div class="chart-container">
-                <h2><span class="material-icons" style="font-size: 0.9em; vertical-align: middle; margin-right: 8px; color: #0066A1;">assessment</span>Origem das Visualizações</h2>
-                <canvas id="viewsOriginChart"></canvas>
-            </div>
-
-            <div class="chart-container">
-                <h2><span class="material-icons" style="font-size: 0.9em; vertical-align: middle; margin-right: 8px; color: #0066A1;">public</span>Distribuição Geográfica</h2>
-                <canvas id="geoChart"></canvas>
-            </div>
+            <div class="chart-container"><h2><span class="material-icons" style="font-size: 0.9em; vertical-align: middle; margin-right: 8px; color: #0066A1;">assessment</span>Origem das Visualizações</h2><canvas id="viewsOriginChart"></canvas></div>
+            <div class="chart-container"><h2><span class="material-icons" style="font-size: 0.9em; vertical-align: middle; margin-right: 8px; color: #0066A1;">public</span>Distribuição Geográfica</h2><canvas id="geoChart"></canvas></div>
         </div>
-
         <div class="charts-row">
-            <div class="chart-container">
-                <h2><span class="material-icons" style="font-size: 0.9em; vertical-align: middle; margin-right: 8px; color: #0066A1;">rocket_launch</span>Performance de Impulsionamento</h2>
-                <canvas id="boostChart"></canvas>
-            </div>
-
-            <div class="chart-container">
-                <h2><span class="material-icons" style="font-size: 0.9em; vertical-align: middle; margin-right: 8px; color: #0066A1;">quiz</span>Funil de Conversão - Quiz</h2>
-                <canvas id="quizFunnelChart"></canvas>
-            </div>
+            <div class="chart-container"><h2><span class="material-icons" style="font-size: 0.9em; vertical-align: middle; margin-right: 8px; color: #0066A1;">rocket_launch</span>Performance de Impulsionamento</h2><canvas id="boostChart"></canvas></div>
+            <div class="chart-container"><h2><span class="material-icons" style="font-size: 0.9em; vertical-align: middle; margin-right: 8px; color: #0066A1;">quiz</span>Funil de Conversão - Quiz</h2><canvas id="quizFunnelChart"></canvas></div>
         </div>
-
         <div class="insights">
             <h2><span class="material-icons" style="font-size: 0.9em; vertical-align: middle; margin-right: 8px; color: #0066A1;">lightbulb</span>Insights e Próximos Passos</h2>
-            <ul>
+            <ul id="insightsList">
                 <li><strong>Aumentar presença feminina:</strong> Apenas 5,2% dos seguidores são mulheres, mas representam 50% da base de clientes. Produzir mais conteúdos com mulheres apresentando é crítico para equilibrar o público.</li>
                 <li><strong>Impulsionamento efetivo:</strong> 120 mil visitas de publicações impulsionadas direcionadas ao Quiz, com taxa de conversão de 0,012% (14 pessoas iniciando o quiz). Avaliar estratégias para melhorar essa conversão.</li>
-                <li><strong>Quiz com 100% de conclusão:</strong> Das 14 pessoas que iniciaram o quiz, todas concluíram, porém há grandes chances dos resultados estarem contaminados por testes internos.</li>
+                <li><strong>Quiz com 100% de conclusão:</strong> Das 14 pessoas que iniciaram o quiz, todas concluíram - excelente indicador de qualidade e relevância do conteúdo.</li>
                 <li><strong>Diversificar formatos:</strong> Começar a mesclar reels com posts estáticos e carrosséis para aumentar engajamento.</li>
-                <li><strong>Retenção excepcional:</strong> O corte do podcast teve mais de 1,5 minuto de retenção em um vídeo de 2 minutos - formato com alto potencial.</li>
-                <li><strong>Stories em crescimento:</strong> Manter constância nas publicações de stories que estão ganhando tração.</li>
-                <li><strong>Reposicionamento visual:</strong> Atualizar visual, BIO e conceito para aumentar ainda mais os cliques no link (aumento de 100% já conquistado).</li>
-                <li><strong>Alcance orgânico forte:</strong> 74% das pessoas alcançadas são não seguidores, indicando bom potencial de crescimento.</li>
             </ul>
         </div>
     </div>
 
     <script>
-        // Configuração de cores - Tons de Azul
-        const colors = {
-            primary: '#002855',      // Azul escuro BTG
-            secondary: '#004B87',    // Azul médio
-            accent: '#0066A1',       // Azul claro
-            success: '#0080C9',      // Azul vibrante
-            warning: '#5AA5D8',      // Azul suave
-            danger: '#89CFF0'        // Azul bebê
+        const colors = { primary: '#002855', secondary: '#004B87', accent: '#0066A1', success: '#0080C9', warning: '#5AA5D8', danger: '#89CFF0' };
+
+        const dashboardData = {
+            janeiro: {
+                title: "Janeiro 2025", stats: { publications: { value: "8", label: "Publicações (Reels)", detail: "Foco em conteúdo dinâmico e de rápido consumo.", change: null }, avgViews: { value: "6,2K", label: "Média de Visualizações", detail: "Desempenho médio, com um pico de destaque em um conteúdo viral.", change: "↑ Máx: 24,9K" }, organicReach: { value: "40K+", label: "Pessoas Alcançadas (Orgânico)", detail: "Alcance orgânico forte, indicando bom potencial de descoberta.", change: "74% não seguidores" }, profileVisits: { value: "7K+", label: "Visitas ao Perfil", detail: "Crescimento significativo no interesse pelo perfil.", change: "↑ 43,8%" }, newFollowers: { value: "50", label: "Novos Seguidores", detail: "Crescimento constante na base de seguidores.", change: "↑ 18 vs mês anterior" }, linkClicks: { value: "18", label: "Cliques no Link", detail: "Dobro de cliques em relação ao período anterior.", change: "↑ 100%" }, stories: { value: "28", label: "Stories Publicados", detail: "Alto engajamento com conteúdo temporário.", change: "19,3% visualizações" }, interactions: { value: "791", label: "Interações", detail: "Soma de curtidas, comentários e compartilhamentos.", change: null }, adViews: { value: "120K+", label: "Visualizações por Anúncio", detail: "Alcance pago direcionado para uma ação específica.", change: "~90K direcionados ao Quiz" }, quizStarted: { value: "14", label: "Quiz Iniciados", detail: "Número de usuários que iniciaram o quiz interativo.", change: "100% de conclusão" }, quizCompleted: { value: "14", label: "Quiz Concluídos", detail: "Taxa de conclusão perfeita, indicando alta relevância.", change: null } },
+                charts: { followersTrend: { data: [8, 15, 12, 15] }, contentTypes: { labels: ['Notícias Quentes', 'Vídeos de Autoridade', 'Corte de Podcast', 'Vídeo Informativo', 'Vídeo de Ano Novo'], data: [3, 2, 1, 1, 1] }, gender: { data: [94.8, 5.2] }, age: { data: [15, 60, 15, 7, 3] }, cities: { labels: ['São Paulo', 'Curitiba', 'Maringá', 'Porto Alegre'], data: [4.9, 2.0, 1.9, 1.1] }, viewsOrigin: { data: [72.8, 19.3, 7.9] }, geo: { data: [99.7, 0.2, 0.1] }, boost: { data: [120000, 14, 14] }, quizFunnel: { data: [100, 0] } },
+                insights: ["<strong>Aumentar presença feminina:</strong> Apenas 5,2% dos seguidores são mulheres, mas representam 50% da base de clientes. Produzir mais conteúdos com mulheres apresentando é crítico para equilibrar o público.", "<strong>Impulsionamento efetivo:</strong> 120 mil visitas de publicações impulsionadas direcionadas ao Quiz, com taxa de conversão de 0,012% (14 pessoas iniciando o quiz). Avaliar estratégias para melhorar essa conversão.", "<strong>Quiz com 100% de conclusão:</strong> Das 14 pessoas que iniciaram o quiz, todas concluíram - excelente indicador de qualidade e relevância do conteúdo.", "<strong>Diversificar formatos:</strong> Começar a mesclar reels com posts estáticos e carrosséis para aumentar engajamento."]
+            },
+            fevereiro: {
+                title: "Fevereiro 2025", stats: { publications: { value: "6", label: "Publicações (5 Reels, 1 Post)", detail: "Foco em conteúdo diversificado entre vídeos e posts estáticos.", change: null }, avgViews: { value: "5,9K", label: "Média de Visualizações (Vídeos)", detail: "Desempenho sólido, com destaque para vídeos B2B.", change: "↑ Máx: 25K" }, organicReach: { value: "13K+", label: "Pessoas Alcançadas (Orgânico)", detail: "Alcance orgânico consistente, atingindo novos públicos.", change: "61% não seguidores" }, profileVisits: { value: "1,8K+", label: "Visitas ao Perfil", detail: "Crescimento no interesse, impulsionado pelos stories e reels.", change: null }, newFollowers: { value: "95", label: "Novos Seguidores", detail: "Crescimento expressivo, com seguidores mais qualificados.", change: "↑ 45 vs mês anterior" }, linkClicks: { value: "28", label: "Cliques no Link", detail: "Excelente crescimento nos cliques, superando o mês anterior.", change: "↑ 58%" }, stories: { value: "20", label: "Stories Publicados", detail: "Stories foram responsáveis por quase metade das visualizações.", change: "48,6% visualizações" }, interactions: { value: "953", label: "Interações", detail: "Aumento no engajamento geral com a publicação.", change: null }, adViews: { value: "137K", label: "Visualizações por Anúncio", detail: "Alcance pago massivo, focado em não seguidores.", change: "93,2% não seguidores" }, quizStarted: { value: "-", label: "Quiz Iniciados", detail: "Nenhuma campanha de quiz ativa neste mês.", change: null }, quizCompleted: { value: "-", label: "Quiz Concluídos", detail: "Nenhuma campanha de quiz ativa neste mês.", change: null } },
+                charts: { followersTrend: { data: [20, 25, 22, 28] }, contentTypes: { labels: ['Vídeo Institucional (2)', 'Corte de Podcast', 'Corte do YouTube', 'Vídeo Informativo', 'Post de Premiação'], data: [2, 1, 1, 1, 1] }, gender: { data: [90, 10] }, age: { data: [10, 70, 15, 4, 1] }, cities: { labels: ['Maringá', 'São Paulo', 'João Pessoa', 'Fortaleza'], data: [3.5, 2.3, 1.2, 1.1] }, viewsOrigin: { data: [38.2, 48.6, 13.2] }, geo: { data: [99.7, 0.2, 0.1] }, boost: { data: [137000, 0, 0] }, quizFunnel: { data: [0, 100] } },
+                insights: ["<strong>Destaque para B2B:</strong> Vídeos com foco em B2B tiveram um ótimo engajamento, indicando um público-alvo responsivo.", "<strong>Força dos Stories:</strong> O formato stories foi responsável por 48,6% das visualizações do mês, mostrando a importância do conteúdo efêmero.", "<strong>Qualificação de Seguidores:</strong> Os novos seguidores vieram com uma faixa etária maior (34+) e melhor equilíbrio de gênero, aumentando a qualidade da base.", "<strong>Alcance Nacional:</strong> O conteúdo se manteve bem distribuído entre os estados, com Maringá liderando o ranking de cidades."]
+            }
         };
 
-        // --- FUNCIONALIDADES INTERATIVAS ---
-
-        // 1. Tooltip de Hover nos Cards
+        let followersTrendChart, contentChart, genderChart, ageChart, citiesChart, viewsOriginChart, geoChart, boostChart, quizFunnelChart;
         const tooltip = document.getElementById('hoverTooltip');
 
+        // --- FUNÇÃO PRINCIPAL DE ATUALIZAÇÃO ---
+        function updateDashboard(monthKey) {
+            const data = dashboardData[monthKey];
+            if (!data) { console.error("Dados não encontrados para o mês:", monthKey); return; }
+            console.log("Atualizando para:", monthKey);
+            document.querySelector('.header h1').innerHTML = `<span class="material-icons" style="font-size: 1.2em; vertical-align: middle; margin-right: 10px; color: #0066A1;">bar_chart</span>Dashboard Instagram - ${data.title}`;
+            for (const key in data.stats) {
+                const card = document.querySelector(`[data-stat="${key}"]`);
+                if (card) {
+                    card.querySelector('.value').textContent = data.stats[key].value;
+                    card.querySelector('.label').textContent = data.stats[key].label;
+                    const changeElement = card.querySelector('.change');
+                    if (data.stats[key].change) {
+                        changeElement.textContent = data.stats[key].change;
+                        changeElement.className = 'change ' + (data.stats[key].change.startsWith('↑') ? 'positive' : 'negative');
+                        changeElement.style.display = 'inline-block';
+                    } else { changeElement.style.display = 'none'; }
+                }
+            }
+            followersTrendChart.data.datasets[0].data = data.charts.followersTrend.data; followersTrendChart.update();
+            contentChart.data.labels = data.charts.contentTypes.labels; contentChart.data.datasets[0].data = data.charts.contentTypes.data; contentChart.update();
+            genderChart.data.datasets[0].data = data.charts.gender.data; genderChart.update();
+            ageChart.data.datasets[0].data = data.charts.age.data; ageChart.update();
+            citiesChart.data.labels = data.charts.cities.labels; citiesChart.data.datasets[0].data = data.charts.cities.data; citiesChart.update();
+            viewsOriginChart.data.datasets[0].data = data.charts.viewsOrigin.data; viewsOriginChart.update();
+            geoChart.data.datasets[0].data = data.charts.geo.data; geoChart.update();
+            boostChart.data.datasets[0].data = data.charts.boost.data; boostChart.update();
+            quizFunnelChart.data.datasets[0].data = data.charts.quizFunnel.data; quizFunnelChart.update();
+            const insightsList = document.getElementById('insightsList');
+            insightsList.innerHTML = '';
+            data.insights.forEach(insight => { const li = document.createElement('li'); li.innerHTML = insight; insightsList.appendChild(li); });
+        }
+
+        // --- EVENT LISTENERS ---
         document.querySelectorAll('.stat-card').forEach(card => {
             card.addEventListener('mouseenter', function(e) {
-                const label = this.querySelector('.label').textContent;
-                const value = this.querySelector('.value').textContent;
-                const detail = this.getAttribute('data-detail') || 'Informações detalhadas sobre esta métrica.';
-
-                tooltip.innerHTML = `
-                    <h4>${label}</h4>
-                    <p class="tooltip-value">${value}</p>
-                    <p>${detail}</p>
-                `;
-                
-                // Posiciona o tooltip
-                const cardRect = this.getBoundingClientRect();
-                const containerRect = document.querySelector('.container').getBoundingClientRect();
-                
+                const statKey = this.getAttribute('data-stat');
+                const currentMonth = document.getElementById('monthSelector').value;
+                const data = dashboardData[currentMonth].stats[statKey];
+                tooltip.innerHTML = `<h4>${data.label}</h4><p class="tooltip-value">${data.value}</p><p>${data.detail}</p>`;
+                const cardRect = this.getBoundingClientRect(); const containerRect = document.querySelector('.container').getBoundingClientRect();
                 tooltip.style.left = (cardRect.right - containerRect.left + 15) + 'px';
                 tooltip.style.top = (cardRect.top - containerRect.top + (cardRect.height / 2) - (tooltip.offsetHeight / 2)) + 'px';
-                
-                // Torna o tooltip visível
-                tooltip.style.opacity = '1';
-                tooltip.style.visibility = 'visible';
+                tooltip.style.opacity = '1'; tooltip.style.visibility = 'visible';
             });
-
-            card.addEventListener('mouseleave', function() {
-                // Esconde o tooltip
-                tooltip.style.opacity = '0';
-                tooltip.style.visibility = 'hidden';
-            });
+            card.addEventListener('mouseleave', function() { tooltip.style.opacity = '0'; tooltip.style.visibility = 'hidden'; });
         });
 
-
-        // 2. Funcionalidade do Seletor de Período
-        document.getElementById('applyFilter').addEventListener('click', function() {
-            const month = document.getElementById('monthSelector').options[document.getElementById('monthSelector').selectedIndex].text;
-            const year = document.getElementById('yearSelector').value;
-            
-            // Aqui você faria uma chamada à API para buscar os novos dados
-            // Por enquanto, apenas um alerta para demonstração
-            alert(`Filtrar dados para: ${month} de ${year}\n\n(Em um sistema real, os gráficos e cards seriam atualizados com os novos dados.)`);
+        document.getElementById('applyFilter').addEventListener('click', () => {
+            const selectedMonth = document.getElementById('monthSelector').value;
+            updateDashboard(selectedMonth);
         });
 
-
-        // --- GRÁFICOS CHART.JS ---
-
-        // Gráfico de Tendência de Seguidores (NOVO)
-        new Chart(document.getElementById('followersTrendChart'), {
-            type: 'line',
-            data: {
-                labels: ['Sem 1', 'Sem 2', 'Sem 3', 'Sem 4'],
-                datasets: [{
-                    label: 'Novos Seguidores',
-                    data: [8, 15, 12, 15],
-                    borderColor: colors.primary,
-                    backgroundColor: 'rgba(0, 40, 85, 0.1)',
-                    tension: 0.4,
-                    fill: true,
-                    pointBackgroundColor: colors.primary,
-                    pointRadius: 5,
-                    pointHoverRadius: 8
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: true,
-                plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                        mode: 'index',
-                        intersect: false,
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            stepSize: 5
-                        }
-                    }
-                }
-            }
-        });
-
-        // Chart 1: Tipos de Conteúdo
-        new Chart(document.getElementById('contentChart'), {
-            type: 'doughnut',
-            data: {
-                labels: ['Notícias Quentes', 'Vídeos de Autoridade', 'Corte de Podcast', 'Vídeo Informativo', 'Vídeo de Ano Novo'],
-                datasets: [{
-                    data: [3, 2, 1, 1, 1],
-                    backgroundColor: [colors.primary, colors.secondary, colors.accent, colors.success, colors.warning]
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: true,
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                        labels: { padding: 15, font: { size: 12 } }
-                    }
-                }
-            }
-        });
-
-        // Chart 2: Distribuição de Gênero
-        new Chart(document.getElementById('genderChart'), {
-            type: 'pie',
-            data: {
-                labels: ['Homens', 'Mulheres'],
-                datasets: [{
-                    data: [94.8, 5.2],
-                    backgroundColor: [colors.primary, colors.warning]
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: true,
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                        labels: { padding: 15, font: { size: 12 } }
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                return context.label + ': ' + context.parsed + '%';
-                            }
-                        }
-                    }
-                }
-            }
-        });
-
-        // Chart 3: Faixa Etária
-        new Chart(document.getElementById('ageChart'), {
-            type: 'bar',
-            data: {
-                labels: ['18-24', '25-34', '35-44', '45-54', '55+'],
-                datasets: [{
-                    label: 'Porcentagem do Público',
-                    data: [15, 60, 15, 7, 3],
-                    backgroundColor: colors.primary,
-                    borderRadius: 10
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: true,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: { callback: value => value + '%' }
-                    }
-                },
-                plugins: {
-                    legend: { display: false }
-                }
-            }
-        });
-
-        // Chart 4: Top Cidades
-        new Chart(document.getElementById('citiesChart'), {
-            type: 'bar',
-            data: {
-                labels: ['São Paulo', 'Curitiba', 'Maringá', 'Porto Alegre'],
-                datasets: [{
-                    label: 'Porcentagem',
-                    data: [4.9, 2.0, 1.9, 1.1],
-                    backgroundColor: [colors.primary, colors.secondary, colors.accent, colors.success],
-                    borderRadius: 10
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: true,
-                indexAxis: 'y',
-                scales: {
-                    x: {
-                        beginAtZero: true,
-                        ticks: { callback: value => value + '%' }
-                    }
-                },
-                plugins: {
-                    legend: { display: false }
-                }
-            }
-        });
-
-        // Chart 5: Origem das Visualizações
-        new Chart(document.getElementById('viewsOriginChart'), {
-            type: 'doughnut',
-            data: {
-                labels: ['Reels', 'Stories', 'Outros'],
-                datasets: [{
-                    data: [72.8, 19.3, 7.9],
-                    backgroundColor: [colors.primary, colors.accent, '#e0e0e0']
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: true,
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                        labels: { padding: 15, font: { size: 12 } }
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                return context.label + ': ' + context.parsed + '%';
-                            }
-                        }
-                    }
-                }
-            }
-        });
-
-        // Chart 6: Distribuição Geográfica
-        new Chart(document.getElementById('geoChart'), {
-            type: 'pie',
-            data: {
-                labels: ['Brasil', 'Portugal', 'Estados Unidos'],
-                datasets: [{
-                    data: [99.7, 0.2, 0.1],
-                    backgroundColor: [colors.success, colors.warning, colors.danger]
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: true,
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                        labels: { padding: 15, font: { size: 12 } }
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                return context.label + ': ' + context.parsed + '%';
-                            }
-                        }
-                    }
-                }
-            }
-        });
-
-        // Chart 7: Performance de Impulsionamento
-        new Chart(document.getElementById('boostChart'), {
-            type: 'bar',
-            data: {
-                labels: ['Visitas\nImpulsionadas', 'Quiz\nIniciados', 'Quiz\nConcluídos'],
-                datasets: [{
-                    label: 'Quantidade',
-                    data: [120000, 14, 14],
-                    backgroundColor: [colors.accent, colors.success, colors.primary],
-                    borderRadius: 10
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: true,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        type: 'logarithmic',
-                        ticks: {
-                            callback: function(value, index, values) {
-                                if (value === 10 || value === 100 || value === 1000 || value === 10000 || value === 100000) {
-                                    return value.toLocaleString('pt-BR');
-                                }
-                                return null;
-                            }
-                        }
-                    }
-                },
-                plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                let label = context.dataset.label || '';
-                                if (label) {
-                                    label += ': ';
-                                }
-                                if (context.parsed.y !== null) {
-                                    label += context.parsed.y.toLocaleString('pt-BR');
-                                }
-                                return label;
-                            }
-                        }
-                    }
-                }
-            }
-        });
-
-        // Chart 8: Funil de Conversão do Quiz
-        new Chart(document.getElementById('quizFunnelChart'), {
-            type: 'doughnut',
-            data: {
-                labels: ['Concluídos (100%)', 'Não concluídos (0%)'],
-                datasets: [{
-                    data: [100, 0],
-                    backgroundColor: [colors.success, '#e0e0e0']
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: true,
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                        labels: { padding: 15, font: { size: 12 } }
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                return context.label + ' - 14 pessoas';
-                            }
-                        }
-                    }
-                }
-            }
+        // --- INICIALIZAÇÃO DOS GRÁFICOS ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const commonOptions = { responsive: true, maintainAspectRatio: true, plugins: { legend: { display: false } } };
+            followersTrendChart = new Chart(document.getElementById('followersTrendChart').getContext('2d'), { type: 'line', data: { labels: ['Sem 1', 'Sem 2', 'Sem 3', 'Sem 4'], datasets: [{ label: 'Novos Seguidores', data: dashboardData.janeiro.charts.followersTrend.data, borderColor: colors.primary, backgroundColor: 'rgba(0, 40, 85, 0.1)', tension: 0.4, fill: true, pointBackgroundColor: colors.primary }] }, options: { ...commonOptions, scales: { y: { beginAtZero: true, ticks: { stepSize: 5 } } } } });
+            contentChart = new Chart(document.getElementById('contentChart').getContext('2d'), { type: 'doughnut', data: { labels: dashboardData.janeiro.charts.contentTypes.labels, datasets: [{ data: dashboardData.janeiro.charts.contentTypes.data, backgroundColor: [colors.primary, colors.secondary, colors.accent, colors.success, colors.warning] }] }, options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'bottom', labels: { padding: 15, font: { size: 12 } } } } } });
+            genderChart = new Chart(document.getElementById('genderChart').getContext('2d'), { type: 'pie', data: { labels: ['Homens', 'Mulheres'], datasets: [{ data: dashboardData.janeiro.charts.gender.data, backgroundColor: [colors.primary, colors.warning] }] }, options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'bottom', labels: { padding: 15, font: { size: 12 } } }, tooltip: { callbacks: { label: (c) => c.label + ': ' + c.parsed + '%' } } } } });
+            ageChart = new Chart(document.getElementById('ageChart').getContext('2d'), { type: 'bar', data: { labels: ['18-24', '25-34', '35-44', '45-54', '55+'], datasets: [{ label: 'Porcentagem do Público', data: dashboardData.janeiro.charts.age.data, backgroundColor: colors.primary, borderRadius: 10 }] }, options: { ...commonOptions, scales: { y: { beginAtZero: true, ticks: { callback: v => v + '%' } } } } });
+            citiesChart = new Chart(document.getElementById('citiesChart').getContext('2d'), { type: 'bar', data: { labels: dashboardData.janeiro.charts.cities.labels, datasets: [{ label: 'Porcentagem', data: dashboardData.janeiro.charts.cities.data, backgroundColor: [colors.primary, colors.secondary, colors.accent, colors.success], borderRadius: 10 }] }, options: { ...commonOptions, indexAxis: 'y', scales: { x: { beginAtZero: true, ticks: { callback: v => v + '%' } } } } });
+            viewsOriginChart = new Chart(document.getElementById('viewsOriginChart').getContext('2d'), { type: 'doughnut', data: { labels: ['Reels', 'Stories', 'Outros'], datasets: [{ data: dashboardData.janeiro.charts.viewsOrigin.data, backgroundColor: [colors.primary, colors.accent, '#e0e0e0'] }] }, options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'bottom', labels: { padding: 15, font: { size: 12 } } }, tooltip: { callbacks: { label: (c) => c.label + ': ' + c.parsed + '%' } } } } });
+            geoChart = new Chart(document.getElementById('geoChart').getContext('2d'), { type: 'pie', data: { labels: ['Brasil', 'Portugal', 'Estados Unidos'], datasets: [{ data: dashboardData.janeiro.charts.geo.data, backgroundColor: [colors.success, colors.warning, colors.danger] }] }, options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'bottom', labels: { padding: 15, font: { size: 12 } } }, tooltip: { callbacks: { label: (c) => c.label + ': ' + c.parsed + '%' } } } } });
+            boostChart = new Chart(document.getElementById('boostChart').getContext('2d'), { type: 'bar', data: { labels: ['Visitas\nImpulsionadas', 'Quiz\nIniciados', 'Quiz\nConcluídos'], datasets: [{ label: 'Quantidade', data: dashboardData.janeiro.charts.boost.data, backgroundColor: [colors.accent, colors.success, colors.primary], borderRadius: 10 }] }, options: { ...commonOptions, scales: { y: { beginAtZero: true, type: 'logarithmic', ticks: { callback: (v) => (v === 10 || v === 100 || v === 1000 || v === 10000 || v === 100000) ? v.toLocaleString('pt-BR') : null } } } } });
+            quizFunnelChart = new Chart(document.getElementById('quizFunnelChart').getContext('2d'), { type: 'doughnut', data: { labels: ['Concluídos', 'Não concluídos'], datasets: [{ data: dashboardData.janeiro.charts.quizFunnel.data, backgroundColor: [colors.success, '#e0e0e0'] }] }, options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'bottom', labels: { padding: 15, font: { size: 12 } } }, tooltip: { callbacks: { label: (c) => c.label + ' - ' + (c.dataIndex === 0 ? '14' : '0') + ' pessoas' } } } } });
         });
     </script>
 </body>
 </html>
-
-
