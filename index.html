@@ -333,6 +333,34 @@
             color: #0F0F0F;
         }
 
+        /* Nova Seção: Perfil dos Novos Seguidores */
+        #newFollowersSection {
+            display: none;
+            animation: fadeIn 0.8s ease-out forwards;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            padding-top: 20px;
+            border-top: 2px dashed rgba(255,255,255,0.2);
+        }
+        #newFollowersSection h1.section-title {
+            color: #ffffff;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+        .top-posts-list li {
+            padding: 10px;
+            border-bottom: 1px solid #EBEBEB;
+            font-size: 0.95em;
+        }
+        .top-posts-list li:last-child {
+            border-bottom: none;
+        }
+        .top-posts-list li span.rank {
+            font-weight: bold;
+            color: #0086FF;
+            margin-right: 10px;
+        }
+
         #lpSection {
             display: none;
             animation: fadeIn 0.8s ease-out forwards;
@@ -426,6 +454,7 @@
             border: 1px solid #EBEBEB; 
             padding: 15px; 
             text-align: left; 
+            white-space: nowrap;
         }
         .compare-table th { 
             background-color: #0086FF; 
@@ -629,7 +658,7 @@
             <div class="stat-card" data-stat="stories">
                 <span class="material-icons">auto_stories</span>
                 <div class="value"></div>
-                <div class="label">Mix (Stories/Outros)</div>
+                <div class="label">Top Interação</div>
                 <div class="change" style="display:none;"></div>
             </div>
             <div class="stat-card" data-stat="interactions">
@@ -651,21 +680,52 @@
         <div class="chart-container full-width">
             <h2><span class="material-icons" style="font-size: 0.9em; vertical-align: middle; margin-right: 8px; color: #0086FF;">rocket_launch</span>Performance de Impulsionamento (Topo de Funil)</h2>
             <canvas id="boostChart"></canvas>
+            <p style="font-size: 0.85em; color: #67686A; margin-top: 15px;">* Nota: Nem todas as visualizações de impulsionamento (Visitas Imp.) são destinadas exclusivamente a campanhas de captação de leads.</p>
         </div>
 
         <div class="charts-row">
-            <div class="chart-container"><h2><span class="material-icons" style="font-size: 0.9em; vertical-align: middle; margin-right: 8px; color: #0086FF;">trending_up</span>Evolução de Novos Seguidores</h2><canvas id="followersTrendChart"></canvas></div>
-            <div class="chart-container"><h2><span class="material-icons" style="font-size: 0.9em; vertical-align: middle; margin-right: 8px; color: #0086FF;">movie</span>Tipos de Conteúdo</h2><canvas id="contentChart"></canvas></div>
+            <div class="chart-container">
+                <h2><span class="material-icons" style="font-size: 0.9em; vertical-align: middle; margin-right: 8px; color: #0086FF;">trending_up</span>Evolução de Novos Seguidores</h2>
+                <canvas id="followersTrendChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <h2><span class="material-icons" style="font-size: 0.9em; vertical-align: middle; margin-right: 8px; color: #0086FF;">movie</span>Visualizações por Conteúdo</h2>
+                <canvas id="contentChart"></canvas>
+            </div>
         </div>
         <div class="charts-row">
-            <div class="chart-container"><h2><span class="material-icons" style="font-size: 0.9em; vertical-align: middle; margin-right: 8px; color: #0086FF;">cake</span>Faixa Etária do Público</h2><canvas id="ageChart"></canvas></div>
-            <div class="chart-container"><h2><span class="material-icons" style="font-size: 0.9em; vertical-align: middle; margin-right: 8px; color: #0086FF;">wc</span>Distribuição de Gênero</h2><canvas id="genderChart"></canvas></div>
+            <div class="chart-container"><h2><span class="material-icons" style="font-size: 0.9em; vertical-align: middle; margin-right: 8px; color: #0086FF;">cake</span>Faixa Etária do Público Geral</h2><canvas id="ageChart"></canvas></div>
+            <div class="chart-container"><h2><span class="material-icons" style="font-size: 0.9em; vertical-align: middle; margin-right: 8px; color: #0086FF;">wc</span>Distribuição de Gênero Geral</h2><canvas id="genderChart"></canvas></div>
         </div>
         <div class="charts-row">
-            <div class="chart-container"><h2><span class="material-icons" style="font-size: 0.9em; vertical-align: middle; margin-right: 8px; color: #0086FF;">location_city</span>Top 4 Cidades</h2><canvas id="citiesChart"></canvas></div>
+            <div class="chart-container"><h2><span class="material-icons" style="font-size: 0.9em; vertical-align: middle; margin-right: 8px; color: #0086FF;">location_city</span>Top Cidades Geral</h2><canvas id="citiesChart"></canvas></div>
             <div class="chart-container"><h2><span class="material-icons" style="font-size: 0.9em; vertical-align: middle; margin-right: 8px; color: #0086FF;">assessment</span>Origem das Visualizações/Interações</h2><canvas id="viewsOriginChart"></canvas></div>
         </div>
         
+        <div id="newFollowersSection">
+            <h1 class="section-title"><span class="material-icons" style="color: white; font-size: 1em; vertical-align: middle;">person_add</span> Perfil dos Novos Seguidores & Top Posts</h1>
+            
+            <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+                <div class="stat-card">
+                    <h3 style="color: #001138; margin-bottom: 15px; font-size: 1.2em;"><span class="material-icons" style="font-size: 1em; vertical-align: middle; color: #0086FF;">star</span> Top 5 Conteúdos (Engajamento)</h3>
+                    <ul id="topPostsList" class="top-posts-list">
+                        </ul>
+                </div>
+                <div class="stat-card">
+                    <h3 style="color: #001138; margin-bottom: 15px; font-size: 1.2em;"><span class="material-icons" style="font-size: 1em; vertical-align: middle; color: #0086FF;">face</span> Faixa Etária (Somente Novos)</h3>
+                    <canvas id="newAgeChart" style="max-height: 200px;"></canvas>
+                </div>
+                <div class="stat-card">
+                    <h3 style="color: #001138; margin-bottom: 15px; font-size: 1.2em;"><span class="material-icons" style="font-size: 1em; vertical-align: middle; color: #0086FF;">wc</span> Gênero (Somente Novos)</h3>
+                    <canvas id="newGenderChart" style="max-height: 200px;"></canvas>
+                </div>
+                <div class="stat-card">
+                    <h3 style="color: #001138; margin-bottom: 15px; font-size: 1.2em;"><span class="material-icons" style="font-size: 1em; vertical-align: middle; color: #0086FF;">place</span> Localização (Somente Novos)</h3>
+                    <canvas id="newLocationsChart" style="max-height: 200px;"></canvas>
+                </div>
+            </div>
+        </div>
+
         <div id="lpSection">
             <h1 class="section-title"><span class="material-icons" style="color: white; font-size: 1em; vertical-align: middle;">lan</span> Funil Comercial e Landing Pages</h1>
             
@@ -678,6 +738,7 @@
                     <span class="material-icons" style="color: white;">group</span>
                     <div class="value" id="lpTotalLeads" style="color: white;">0</div>
                     <div class="label" style="color: #EBEBEB;">Total de Leads Gerados</div>
+                    <div class="change" id="lpTotalLeadsChange" style="background: rgba(255,255,255,0.2); color: white; display: none;"></div>
                 </div>
                 <div class="stat-card">
                     <span class="material-icons">event_available</span>
@@ -766,13 +827,13 @@
                     adViews: { value: "120K+", label: "Visualizações por Anúncio", detail: "Alcance pago.", change: "~90K direcionados ao Quiz" }
                 },
                 charts: { 
-                    followersTrend: { data: [8, 15, 12, 15] }, 
-                    contentTypes: { labels: ['Notícias Quentes', 'Vídeos de Autoridade', 'Corte de Podcast', 'Vídeo Informativo', 'Vídeo de Ano Novo'], data: [3, 2, 1, 1, 1] }, 
+                    followersTrend: { labels: ['Janeiro'], data: [50] }, 
+                    contentTypes: { labels: ['Notícias Quentes', 'Vídeos de Autoridade', 'Corte de Podcast', 'Vídeo Info.', 'Ano Novo'], data: [3, 2, 1, 1, 1] }, 
                     gender: { data: [94.8, 5.2] }, 
                     age: { data: [15, 60, 15, 7, 3] }, 
                     cities: { labels: ['São Paulo', 'Curitiba', 'Maringá', 'Porto Alegre'], data: [4.9, 2.0, 1.9, 1.1] }, 
                     viewsOrigin: { data: [72.8, 19.3, 7.9] }, 
-                    boost: { data: [120000, 14, 14] }
+                    boost: { data: [120000, 14, 14, 0] }
                 },
                 insights: [
                     "<strong>Aumentar presença feminina:</strong> Apenas 5,2% dos seguidores são mulheres, mas representam 50% da base de clientes. Produzir mais conteúdos com mulheres apresentando é crítico para equilibrar o público.", 
@@ -782,24 +843,24 @@
             fevereiro: {
                 title: "Fevereiro 2026", 
                 stats: { 
-                    publications: { value: "6", label: "Publicações (5 Reels, 1 Post)", detail: "Foco diversificado entre vídeos e posts estáticos.", change: null }, 
-                    avgViews: { value: "5,9K", label: "Média de Visualizações (Vídeos)", detail: "Desempenho sólido.", change: "↑ Máx: 25K" }, 
+                    publications: { value: "6", label: "Publicações (5 Reels, 1 Post)", detail: "Foco diversificado.", change: null }, 
+                    avgViews: { value: "5,9K", label: "Média de Visualizações", detail: "Desempenho sólido.", change: "↑ Máx: 25K" }, 
                     organicReach: { value: "13K+", label: "Pessoas Alcançadas (Orgânico)", detail: "Alcance orgânico consistente.", change: "61% não seguidores" }, 
-                    profileVisits: { value: "1,8K+", label: "Visitas ao Perfil", detail: "Crescimento no interesse, impulsionado por stories.", change: null }, 
+                    profileVisits: { value: "1,8K+", label: "Visitas ao Perfil", detail: "Crescimento no interesse.", change: null }, 
                     newFollowers: { value: "95", label: "Novos Seguidores", detail: "Crescimento expressivo.", change: "↑ 45 vs mês anterior" }, 
                     linkClicks: { value: "28", label: "Cliques no Link", detail: "Excelente crescimento nos cliques.", change: "↑ 58%" }, 
                     stories: { value: "20", label: "Stories Publicados", detail: "Responsáveis por quase metade das visualizações.", change: "48,6% visualizações" }, 
                     interactions: { value: "953", label: "Interações", detail: "Aumento no engajamento geral.", change: null }, 
-                    adViews: { value: "137K", label: "Visualizações por Anúncio", detail: "Alcance pago focado em não seguidores.", change: "93,2% não seguidores" }
+                    adViews: { value: "137K", label: "Visualizações por Anúncio", detail: "Alcance pago focado.", change: "93,2% não seguidores" }
                 },
                 charts: { 
-                    followersTrend: { data: [20, 25, 22, 28] }, 
+                    followersTrend: { labels: ['Janeiro', 'Fevereiro'], data: [50, 95] }, 
                     contentTypes: { labels: ['Vídeo Inst.', 'Corte Pod', 'Corte YT', 'Vídeo Info', 'Post Pre'], data: [2, 1, 1, 1, 1] }, 
                     gender: { data: [90, 10] }, 
                     age: { data: [10, 70, 15, 4, 1] }, 
                     cities: { labels: ['Maringá', 'São Paulo', 'João Pessoa', 'Fortaleza'], data: [3.5, 2.3, 1.2, 1.1] }, 
                     viewsOrigin: { data: [38.2, 48.6, 13.2] }, 
-                    boost: { data: [137000, 0, 0] }
+                    boost: { data: [137000, 0, 0, 0] }
                 },
                 insights: ["<strong>Destaque para B2B:</strong> Vídeos com foco em B2B tiveram ótimo engajamento."]
             },
@@ -807,28 +868,28 @@
                 title: "Março 2026", 
                 stats: { 
                     publications: { value: "16", label: "Publicações Totais", detail: "6 Reels e 10 Posts no feed.", change: null }, 
-                    avgViews: { value: "197,2K", label: "Visualizações Totais", detail: "Top vídeo: Catedral (18 mil).", change: "84,8% em Anúncios" }, 
-                    organicReach: { value: "21K", label: "Pessoas Alcançadas (Orgânico)", detail: "Aumento no alcance natural do conteúdo.", change: "↑ 56% vs anterior" }, 
-                    profileVisits: { value: "1.895", label: "Visitas ao Perfil", detail: "Total de atividades no perfil: 1.931.", change: "↑ 3,6%" }, 
-                    newFollowers: { value: "123", label: "Novos Seguidores", detail: "Posts de atração geraram novos leads.", change: "↑ 25,5%" }, 
-                    linkClicks: { value: "36", label: "Cliques no Link", detail: "Direcionamento para LPs gerou aumento.", change: "↑ 44%" }, 
+                    avgViews: { value: "197,2K", label: "Visualizações Totais", detail: "Top vídeo: Catedral.", change: "84,8% em Anúncios" }, 
+                    organicReach: { value: "21K", label: "Pessoas Alcançadas (Orgânico)", detail: "Aumento no alcance natural.", change: "↑ 56% vs anterior" }, 
+                    profileVisits: { value: "1.895", label: "Visitas ao Perfil", detail: "Total de atividades: 1.931.", change: "↑ 3,6%" }, 
+                    newFollowers: { value: "123", label: "Novos Seguidores", detail: "Posts de atração geraram leads.", change: "↑ 25,5%" }, 
+                    linkClicks: { value: "36", label: "Cliques no Link", detail: "Direcionamento para LPs.", change: "↑ 44%" }, 
                     stories: { value: "23,7%", label: "Mix (Stories)", detail: "Reels 32.5%, Posts 43.8%.", change: null }, 
                     interactions: { value: "2.152", label: "Interações", detail: "49,6% ocorreram em anúncios.", change: "59,3% Não-Seguidores" }, 
-                    adViews: { value: "167K", label: "Visualizações por Anúncio", detail: "Forte investimento para visualização de topo de funil.", change: "131K contas alcançadas" }
+                    adViews: { value: "167K", label: "Visualizações por Anúncio", detail: "Forte investimento topo de funil.", change: "131K contas" }
                 },
                 charts: { 
-                    followersTrend: { data: [25, 30, 33, 35] }, 
+                    followersTrend: { labels: ['Janeiro', 'Fevereiro', 'Março'], data: [50, 95, 123] }, 
                     contentTypes: { labels: ['Posts Feed', 'Reels', 'Stories'], data: [43.8, 32.5, 23.7] }, 
                     gender: { data: [84.8, 15.2] }, 
                     age: { data: [33.8, 36.3, 16.8, 5.5, 0] }, 
                     cities: { labels: ['São Paulo', 'Maringá', 'Curitiba', 'Sarandi'], data: [35, 30, 20, 15] }, 
                     viewsOrigin: { data: [40.7, 59.3, 0] }, 
-                    boost: { data: [167000, 349, 8] }
+                    boost: { data: [167000, 999, 349, 8] }
                 },
                 lpStats: {
                     totalLeads: "349", reunioes: "8", reunioesChange: "2,2% conversão", 
                     comparecimentos: "5", comparecimentosChange: "3 não compareceram", 
-                    contas: "2", contasChange: "2 em forecast, 5 em cadência",
+                    contas: "2", contasChange: "2 em forecast",
                     tableData: [
                         { nome: "Calculadora de Patrimônio", leads: 330, conv: "33%", scroll: "77%", tempo: "40s", cpl: "Não medido" },
                         { nome: "Guia IR", leads: 19, conv: "25,6%", scroll: "51%", tempo: "1m10s", cpl: "Não medido" }
@@ -855,33 +916,50 @@
             abril: {
                 title: "Abril 2026", 
                 stats: { 
-                    publications: { value: "16", label: "Publicações Totais", detail: "6 Reels e 10 Posts no feed. Aumento de 7% no desempenho.", change: "↑ 7% Desempenho" }, 
+                    publications: { value: "16", label: "Publicações Totais", detail: "6 Reels e 10 Posts no feed.", change: "↑ 7% Desempenho" }, 
                     avgViews: { value: "146K", label: "Visualizações Totais", detail: "Top vídeo: Carrossel Car Meeting.", change: "69,2% Anúncios" }, 
-                    organicReach: { value: "44,9K", label: "Visualizações Orgânicas", detail: "Maior parte é tráfego de atração para ferramentas.", change: "89,4% Não Seguidores" }, 
-                    profileVisits: { value: "1.036", label: "Visitas ao Perfil", detail: "Verba realocada de brand para LP justifica queda.", change: "↓ vs Março" }, 
-                    newFollowers: { value: "96", label: "Novos Seguidores", detail: "Maringá (17,8%) liderou as localizações de chegada.", change: "↑ 2,4%" }, 
-                    linkClicks: { value: "24", label: "Cliques no Link", detail: "Atenção convertida via anúncios direto para página externa.", change: "↓ vs Março" }, 
-                    stories: { value: "25%", label: "Mix (Stories)", detail: "Reels representam 33% do mix, Posts 42%.", change: null }, 
-                    interactions: { value: "1.491", label: "Interações", detail: "Forte engajamento orgânico (1.145) com a base (55,2% seguidores).", change: "76,8% Orgânico" }, 
-                    adViews: { value: "101K", label: "Visualizações por Anúncio", detail: "Custo convertido em captação direta, não alcance vazio.", change: "Foco LP" }
+                    organicReach: { value: "44,9K", label: "Visualizações Orgânicas", detail: "Tráfego de atração para ferramentas.", change: "89,4% Não Seguidores" }, 
+                    profileVisits: { value: "1.036", label: "Visitas ao Perfil", detail: "Verba realocada justifica queda.", change: "↓ vs Março" }, 
+                    newFollowers: { value: "96", label: "Novos Seguidores", detail: "Crescimento de 2,4%.", change: "↑ 2,4%" }, 
+                    linkClicks: { value: "24", label: "Cliques no Link", detail: "Atenção convertida via anúncios direto.", change: "↓ vs Março" }, 
+                    stories: { value: "Posts", label: "Maior Interação", detail: "Representou 46,4% das interações (Reels 30,3%, Stories 23,3%).", change: "46,4% Posts" }, 
+                    interactions: { value: "1.491", label: "Interações", detail: "Forte engajamento orgânico (1.145).", change: "76,8% Orgânico" }, 
+                    adViews: { value: "101K", label: "Visualizações por Anúncio", detail: "Captação direta de leads.", change: "Foco LP" }
+                },
+                newFollowersData: {
+                    topPosts: [
+                        "Carrossel do car meeting",
+                        "Post Fixo Top 3 Granza",
+                        "Reels Palestra Cesumar",
+                        "Story car meeting",
+                        "Post fixo taxa selic"
+                    ],
+                    age: [5.7, 23.7, 34.8, 20.9, 14.9],
+                    gender: [75, 25],
+                    locations: [17.8, 7.3, 3]
                 },
                 charts: { 
-                    followersTrend: { data: [20, 25, 20, 31] }, 
+                    followersTrend: { labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril'], data: [50, 95, 123, 96] }, 
                     contentTypes: { labels: ['Posts Feed', 'Reels', 'Stories'], data: [42, 33, 25] }, 
                     gender: { data: [86.4, 13.6] }, 
                     age: { data: [20.8, 31, 25.7, 14.5, 8.0] }, 
                     cities: { labels: ['São Paulo', 'Curitiba', 'Maringá', 'Rio de Janeiro'], data: [8.1, 2.5, 2.3, 2.1] }, 
                     viewsOrigin: { data: [55.2, 44.8, 0] }, 
-                    boost: { data: [101089, 350, 8] }
+                    boost: { data: [101089, 2608, 350, 8] }
                 },
                 lpStats: {
-                    totalLeads: "350", reunioes: "8", reunioesChange: "Foco total na conversão", 
-                    comparecimentos: "2", comparecimentosChange: "Mais 2 em negociação", 
-                    contas: "4", contasChange: "Contas confirmadas",
+                    totalLeads: "350", 
+                    totalLeadsChange: "Válidos (Estimativa de 552 brutos)",
+                    reunioes: "13", 
+                    reunioesChange: "8 iniciais + 5 adicionadas", 
+                    comparecimentos: "5", 
+                    comparecimentosChange: "Das 5 novas: 3 feitas e 2 faltas", 
+                    contas: "4", 
+                    contasChange: "Contas confirmadas",
                     tableData: [
-                        { nome: "Calc. Patrimônio", leads: 225, conv: "17%", scroll: "80%", tempo: "44s", cpl: "R$ 0,44" },
-                        { nome: "Calc. Aposentadoria", leads: 104, conv: "15,2%", scroll: "91%", tempo: "51s", cpl: "R$ 0,77" },
-                        { nome: "Guia IR", leads: 21, conv: "12,5%", scroll: "44%", tempo: "30s", cpl: "R$ 7,46" }
+                        { nome: "Calc. Patrimônio", leads: "225 (397 Brutos)", conv: "17%", scroll: "80%", tempo: "44s", cpl: "R$ 0,44" },
+                        { nome: "Calc. Aposentadoria", leads: "104 (134 Brutos)", conv: "15,2%", scroll: "91%", tempo: "51s", cpl: "R$ 0,77" },
+                        { nome: "Guia IR", leads: "21 (21 Brutos)", conv: "12,5%", scroll: "44%", tempo: "30s", cpl: "R$ 7,46" }
                     ]
                 },
                 lpCharts: {
@@ -909,6 +987,7 @@
 
         let followersTrendChart, contentChart, genderChart, ageChart, citiesChart, viewsOriginChart, boostChart;
         let lpAccessesChart, lpConversionChart;
+        let newAgeChart, newGenderChart, newLocationsChart;
 
         const tooltip = document.getElementById('hoverTooltip');
 
@@ -930,7 +1009,7 @@
             });
         }
 
-        // renderLpTable atualizada com Metas Visuais (> 6%)
+        // renderLpTable com Metas Visuais (> 6%)
         function renderLpTable(tableData) {
             const tbody = document.getElementById('lpDetailsBody');
             tbody.innerHTML = '';
@@ -939,7 +1018,6 @@
             tableData.forEach(row => {
                 const tr = document.createElement('tr');
                 
-                // Lógica de Meta Batida (Badge)
                 const convValue = parseFloat(row.conv.replace('%', '').replace(',', '.'));
                 const badgeHtml = convValue > 6 ? '<span class="badge-goal">Meta Batida</span>' : '';
 
@@ -964,6 +1042,34 @@
 
             document.querySelector('.header h1').innerHTML = `<span class="material-icons" style="font-size: 1.2em; vertical-align: middle; margin-right: 10px; color: #0086FF;">bar_chart</span>Dashboard Instagram - ${data.title}`;
             
+            // Nova Seção de Novos Seguidores e Top Posts
+            const newFollowersSec = document.getElementById('newFollowersSection');
+            if (data.newFollowersData) {
+                newFollowersSec.style.display = 'block';
+                
+                // Top Posts List
+                const listEl = document.getElementById('topPostsList');
+                listEl.innerHTML = '';
+                data.newFollowersData.topPosts.forEach((post, index) => {
+                    listEl.innerHTML += `<li><span class="rank">${index + 1}º</span> ${post}</li>`;
+                });
+
+                // Update New Charts
+                if(!newAgeChart) initNewFollowersCharts();
+                newAgeChart.data.datasets[0].data = data.newFollowersData.age;
+                newAgeChart.update();
+
+                newGenderChart.data.datasets[0].data = data.newFollowersData.gender;
+                newGenderChart.update();
+
+                newLocationsChart.data.datasets[0].data = data.newFollowersData.locations;
+                newLocationsChart.update();
+
+            } else {
+                newFollowersSec.style.display = 'none';
+            }
+
+            // Seção LPs
             const lpSection = document.getElementById('lpSection');
             if (monthKey === 'marco' || monthKey === 'abril') {
                 lpSection.style.display = 'block';
@@ -973,6 +1079,15 @@
                 renderLpTable(data.lpStats.tableData);
 
                 document.getElementById('lpTotalLeads').textContent = data.lpStats.totalLeads;
+                
+                // Lógica da nova Label de Brutos
+                if(data.lpStats.totalLeadsChange) {
+                    document.getElementById('lpTotalLeadsChange').textContent = data.lpStats.totalLeadsChange;
+                    document.getElementById('lpTotalLeadsChange').style.display = 'inline-block';
+                } else {
+                    document.getElementById('lpTotalLeadsChange').style.display = 'none';
+                }
+
                 document.getElementById('lpReunioes').textContent = data.lpStats.reunioes;
                 document.getElementById('lpReunioesChange').className = 'change neutral';
                 document.getElementById('lpReunioesChange').textContent = data.lpStats.reunioesChange;
@@ -1018,7 +1133,9 @@
                 }
             }
 
+            // Atualiza Evolução com as labels corretas do mês
             updateChartWithCompare(followersTrendChart, data.charts.followersTrend, compareData?.charts.followersTrend, 'Seguidores', 'line');
+            
             updateChartWithCompare(ageChart, data.charts.age, compareData?.charts.age, 'Faixa Etária', 'bar');
             updateChartWithCompare(citiesChart, data.charts.cities, compareData?.charts.cities, 'Cidades', 'bar');
             updateChartWithCompare(boostChart, data.charts.boost, compareData?.charts.boost, 'Performance', 'bar');
@@ -1114,12 +1231,38 @@
             });
         }
 
+        function initNewFollowersCharts() {
+            const commonOptions = { responsive: true, maintainAspectRatio: true, plugins: { legend: { display: false } } };
+            
+            newAgeChart = new Chart(document.getElementById('newAgeChart').getContext('2d'), { 
+                type: 'bar', 
+                data: { labels: ['18-24', '25-34', '35-44', '45-54', '55+'], datasets: [{ data: [], backgroundColor: colors.accent, borderRadius: 8 }] }, 
+                options: { ...commonOptions, scales: { y: { beginAtZero: true, ticks: { callback: v => v + '%' } } } } 
+            });
+
+            newGenderChart = new Chart(document.getElementById('newGenderChart').getContext('2d'), { 
+                type: 'doughnut', 
+                data: { labels: ['Homens', 'Mulheres'], datasets: [{ data: [], backgroundColor: [colors.primary, colors.warning] }] }, 
+                options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'right' } } } 
+            });
+
+            newLocationsChart = new Chart(document.getElementById('newLocationsChart').getContext('2d'), { 
+                type: 'bar', 
+                data: { labels: ['Maringá', 'São Paulo', 'Rio de Janeiro'], datasets: [{ data: [], backgroundColor: [colors.success, colors.accent, colors.warning], borderRadius: 8 }] }, 
+                options: { ...commonOptions, indexAxis: 'y', scales: { x: { beginAtZero: true, ticks: { callback: v => v + '%' } } } } 
+            });
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('monthSelector').value = 'abril';
             
             const commonOptions = { responsive: true, maintainAspectRatio: true, plugins: { legend: { display: false } } };
             
-            followersTrendChart = new Chart(document.getElementById('followersTrendChart').getContext('2d'), { type: 'line', data: { labels: ['Sem 1', 'Sem 2', 'Sem 3', 'Sem 4'], datasets: [{ label: 'Novos Seguidores', data: [], borderColor: colors.primary, backgroundColor: 'rgba(1, 67, 165, 0.1)', tension: 0.4, fill: true, pointBackgroundColor: colors.primary }] }, options: { ...commonOptions, scales: { y: { beginAtZero: true, ticks: { stepSize: 5 } } } } });
+            followersTrendChart = new Chart(document.getElementById('followersTrendChart').getContext('2d'), { 
+                type: 'line', 
+                data: { labels: [], datasets: [{ label: 'Novos Seguidores', data: [], borderColor: colors.primary, backgroundColor: 'rgba(1, 67, 165, 0.1)', tension: 0.4, fill: true, pointBackgroundColor: colors.primary }] }, 
+                options: { ...commonOptions, scales: { y: { beginAtZero: true, ticks: { stepSize: 20 } } } } 
+            });
             
             contentChart = new Chart(document.getElementById('contentChart').getContext('2d'), { type: 'doughnut', data: { labels: [], datasets: [{ data: [], backgroundColor: [colors.primary, colors.secondary, colors.accent, colors.success, colors.warning] }] }, options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'bottom', labels: { padding: 15, font: { size: 12 } } } } } });
             
@@ -1131,7 +1274,12 @@
             
             viewsOriginChart = new Chart(document.getElementById('viewsOriginChart').getContext('2d'), { type: 'doughnut', data: { labels: ['Seguidores', 'Não Seguidores', 'Outros'], datasets: [{ data: [], backgroundColor: [colors.primary, colors.accent, colors.lightGray] }] }, options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'bottom', labels: { padding: 15, font: { size: 12 } } }, tooltip: { callbacks: { label: (c) => c.label + ': ' + c.parsed + '%' } } } } });
             
-            boostChart = new Chart(document.getElementById('boostChart').getContext('2d'), { type: 'bar', data: { labels: ['Visitas Imp.', 'Leads LPs', 'Agendamentos'], datasets: [{ label: 'Quantidade', data: [], backgroundColor: [colors.accent, colors.success, colors.primary], borderRadius: 10 }] }, options: { ...commonOptions, scales: { y: { beginAtZero: true, type: 'logarithmic', ticks: { callback: (v) => (v === 10 || v === 100 || v === 1000 || v === 10000 || v === 100000) ? v.toLocaleString('pt-BR') : null } } } } });
+            // Boost Chart agora com 4 Barras
+            boostChart = new Chart(document.getElementById('boostChart').getContext('2d'), { 
+                type: 'bar', 
+                data: { labels: ['Visitas Imp.', 'Acessos LPs', 'Leads LPs', 'Agendamentos'], datasets: [{ label: 'Quantidade', data: [], backgroundColor: [colors.accent, colors.primary, colors.success, colors.warning], borderRadius: 10 }] }, 
+                options: { ...commonOptions, scales: { y: { beginAtZero: true, type: 'logarithmic', ticks: { callback: (v) => (v === 10 || v === 100 || v === 1000 || v === 10000 || v === 100000) ? v.toLocaleString('pt-BR') : null } } } } 
+            });
             
             updateDashboard('abril');
         });
